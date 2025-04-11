@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish Tip Calculator</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            font-family: "Poppins", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 360px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #4a4a4a;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0074d9;
+            outline: none;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        }
+
+        .tip {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #333;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .tip.show {
+            display: block;
+            opacity: 1;
+        }
+
+        #each {
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>💰 Tip Calculator</h1>
+        <p>Bill Amount (in ₹)</p>
+        <input type="number" id="amount" placeholder="Enter bill amount">
+
+        <p>How was the service?</p>
+        <select id="services">
+            <option selected disabled hidden>Select service quality</option>
+            <option value="0.25">25% - Top Notch</option>
+            <option value="0.20">20% - Excellent</option>
+            <option value="0.15">15% - Good</option>
+            <option value="0.10">10% - Okay</option>
+            <option value="0.05">5% - Poor</option>
+        </select>
+
+        <p>Number of people sharing the bill</p>
+        <input type="number" id="persons" placeholder="Enter number of people">
+
+        <button id="calculate">Calculate Tip</button>
+
+        <div class="tip" id="tipBox">
+            <p>Each person should tip:</p>
+            <span id="total">0</span> ₹
+            <div id="each"> (per person)</div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            document.querySelector('#calculate').onclick = calculateTip;
+        }
+
+        function calculateTip() {
+            const amount = parseFloat(document.querySelector('#amount').value);
+            const persons = parseInt(document.querySelector('#persons').value);
+            const service = parseFloat(document.querySelector('#services').value);
+            const tipBox = document.querySelector('#tipBox');
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid bill amount.");
+                return;
+            }
+            if (isNaN(service)) {
+                alert("Please select a service quality.");
+                return;
+            }
+            if (isNaN(persons) || persons <= 0) {
+                alert("Please enter a valid number of people.");
+                return;
+            }
+
+            const totalTip = ((amount * service) / persons).toFixed(2);
+            document.querySelector('#total').innerHTML = totalTip;
+
+            document.querySelector('#each').style.display = persons > 1 ? 'block' : 'none';
+            tipBox.classList.add('show');
+        }
+    </script>
+</body>
+
+</html>
